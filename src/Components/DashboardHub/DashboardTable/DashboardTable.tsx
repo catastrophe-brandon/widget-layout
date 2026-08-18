@@ -37,6 +37,7 @@ export const DashboardTable: React.FunctionComponent<DashboardTableProps> = ({ d
   const [dashboardToDelete, setDashboardToDelete] = useState<Dashboard | null>(null);
   const [duplicateDashboardId, setDuplicateDashboardId] = useState<number | null>(null);
   const isEnabledDelete = useFlag('platform.widget-layout.delete-dashboard');
+  const isEnabledShare = useFlag('platform.widget-layout.share');
   const addNotification = useAddNotification();
   const setDefaultDashboard = useSetAtom(setDefaultDashboardAtom);
 
@@ -131,12 +132,16 @@ export const DashboardTable: React.FunctionComponent<DashboardTableProps> = ({ d
       title: 'Copy configuration string',
       onClick: () => handleCopyConfiguration(dashboard),
     },
-    {
-      icon: <UsersIcon />,
-      title: 'Share dashboard',
-      isDisabled: true,
-      onClick: () => console.log(`Share dashboard ${dashboard.id}`),
-    },
+    ...(isEnabledShare
+      ? [
+          {
+            icon: <UsersIcon />,
+            title: 'Share dashboard',
+            isDisabled: true,
+            onClick: () => console.log(`Share dashboard ${dashboard.id}`),
+          },
+        ]
+      : []),
     ...(isEnabledDelete
       ? [
           {
